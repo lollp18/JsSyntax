@@ -1,31 +1,26 @@
 {
-  "name": "jss-syntax-highlighting",
-  "version": "0.0.1",
-  "type": "module",
-  "description": "Syntax highlighting for the JSS framework",
-  "engines": {
-    "vscode": "^1.0.0"
+  "name": "@jss-framework/runtime",
+  "version": "1.0.0",
+  "description": "Ein minimalistisches, reaktives Frontend-Framework zum Erstellen von Komponenten mit Low-Code- und Pro-Code-Ansätzen.",
+  "main": "frontend/app.js",
+  "files": [
+    "frontend/app.js"
+  ],
+  "keywords": [
+    "frontend",
+    "framework",
+    "reactive",
+    "low-code",
+    "jss"
+  ],
+  "author": "Ihr Name",
+  "license": "MIT",
+  "homepage": "https://github.com/IhrName/jss-framework#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IhrName/jss-framework.git"
   },
-  "contributes": {
-    "languages": [
-      {
-        "id": "jss",
-        "aliases": [
-          "JSS",
-          "jss"
-        ],
-        "extensions": [
-          ".jss"
-        ],
-        "configuration": "./js-syntax.language-configuration.json"
-      }
-    ],
-    "grammars": [
-      {
-        "language": "jss",
-        "scopeName": "source.js-syntax",
-        "path": "./js-syntax.tmLanguage.json"
-      }
-    ]
+  "bugs": {
+    "url": "https://github.com/IhrName/jss-framework/issues"
   }
 }

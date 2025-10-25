@@ -2,33 +2,28 @@
     <script>
       ({
         data: {
-          count: 0,
-          showMessage: true
-        },
-        methods: {
-          increment() {
-            this.count++;
-          },
-          toggleMessage() {
-            this.showMessage = !this.showMessage;
-          }
+          user1: { name: "Alice", age: 30 },
+          user2: { name: "Bob", age: 42 }
         }
       })
     </script>
     <css>
-      div{
-        border: 2px solid blue;
-        padding: 10px;
-      }
+        div {
+            padding: 1rem;
+            background-color: #f0f0f0;
+        }
+        button {
+            margin-bottom: 1rem;
+        }
     </css>
     <div>
-        <h1>Hallo from Main app</h1>
-        <p>Count: {{count}}</p>
-        <button data-event-increment="click">+1</button>
-        <hr>
-        <button data-event-toggleMessage="click">Toggle Message</button>
-        <div data-if="showMessage">
-            <p>This message is shown conditionally!</p>
-        </div>
+        <h1>User List</h1>
+
+        <button data-action:click="increment(user1.age)">Happy Birthday, Alice!</button>
+        
+        <user-card v-bind:username="user1.name" v-bind:userage="user1.age"></user-card>
+        
+        <user-card v-bind:username="user2.name" v-bind:userage="user2.age"></user-card>
+
     </div>
 </html>

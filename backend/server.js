@@ -10,7 +10,7 @@ const componentsPath = "./components";
 
 app.use(cors());
 app.use('/frontend', express.static('frontend'));
-app.use('/dist', express.static('dist')); // Statische Dateien aus dem dist-Ordner bereitstellen
+app.use('/dist', express.static('dist')); 
 
 app.get("/", function (req, res) {
   res.sendFile(path.resolve("index.html"));
@@ -21,12 +21,10 @@ const server = app.listen(8080, function () {
 });
 
 const ioserver = new Server(server, {
-  cors: {
-    origin: "*",
-  },
+  cors: { origin: "*" },
 });
 
-const loadAndSendComponents = async () => {
+const loadAndSendComponents = async (socket = null) => {
   try {
     const files = await fs.readdir(componentsPath);
     const content = [];
@@ -37,30 +35,28 @@ const loadAndSendComponents = async () => {
         content.push(fileContent);
       }
     }
-    // An alle verbundenen Clients senden
-    ioserver.emit("components-updated", content);
-    console.log("Component update sent to clients.");
+    
+    const target = socket || ioserver;
+    target.emit("components-updated", content);
+    console.log(socket ? "Component initial load sent to new client." : "Component update broadcasted to all clients.");
+
   } catch (err) {
     console.error("Error processing component files:", err);
   }
 };
 
-// Initiales Laden
-loadAndSendComponents();
-
-// Auf Änderungen überwachen
 const watcher = chokidar.watch(componentsPath, {
-  ignored: /\.|\#.*$/, // ignoriere dotfiles
+  ignored: /\.|\#.*$/,
   persistent: true,
-  ignoreInitial: true, // Nicht beim initialen Scan auslösen
+  ignoreInitial: true,
 });
 
-watcher.on("add", path => { console.log(`File ${path} has been added`); loadAndSendComponents(); });
-watcher.on("change", path => { console.log(`File ${path} has been changed`); loadAndSendComponents(); });
-watcher.on("unlink", path => { console.log(`File ${path} has been removed`); loadAndSendComponents(); });
+watcher
+  .on("add", path => { console.log(`File ${path} has been added`); loadAndSendComponents(); })
+  .on("change", path => { console.log(`File ${path} has been changed`); loadAndSendComponents(); })
+  .on("unlink", path => { console.log(`File ${path} has been removed`); loadAndSendComponents(); });
 
 ioserver.on("connection", (socket) => {
   console.log("Client connected. Sending initial components...");
-  // Die neuesten Komponenten an den neu verbundenen Client senden
-  loadAndSendComponents(); 
+  loadAndSendComponents(socket);
 });
