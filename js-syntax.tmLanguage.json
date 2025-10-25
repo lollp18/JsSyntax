@@ -1,0 +1,135 @@
+
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "JS-Syntax",
+  "scopeName": "source.js-syntax",
+  "patterns": [
+    {
+      "include": "#component"
+    }
+  ],
+  "repository": {
+    "component": {
+      "patterns": [
+        {
+          "begin": "(<)(html)(?=\s*name=)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin.html" },
+            "2": { "name": "entity.name.tag.html" }
+          },
+          "end": "(>)",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.tag.end.html" }
+          },
+          "name": "meta.tag.component.begin.js-syntax",
+          "patterns": [
+            {
+              "begin": "(name)(=)(\")",
+              "beginCaptures": {
+                "1": { "name": "entity.other.attribute-name.js-syntax" },
+                "2": { "name": "punctuation.separator.key-value.html" },
+                "3": { "name": "string.quoted.double.html" }
+              },
+              "end": "(\")",
+              "endCaptures": {
+                "1": { "name": "string.quoted.double.html" }
+              },
+              "name": "meta.attribute.name.js-syntax",
+              "patterns": [
+                {
+                  "name": "entity.other.attribute-value.js-syntax",
+                  "match": "[^\"]+"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "begin": "(<\/)(html)(>)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin.html" },
+            "2": { "name": "entity.name.tag.html" },
+            "3": { "name": "punctuation.definition.tag.end.html" }
+          },
+          "end": "(?!\G)",
+          "name": "meta.tag.component.end.js-syntax"
+        },
+        { "include": "#script-tag" },
+        { "include": "#css-tag" },
+        { "include": "#template" }
+      ]
+    },
+    "script-tag": {
+      "begin": "(<)(script)(>)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.html" },
+        "2": { "name": "entity.name.tag.script.html" },
+        "3": { "name": "punctuation.definition.tag.end.html" }
+      },
+      "end": "(<\/)(script)(>)",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.html" },
+        "2": { "name": "entity.name.tag.script.html" },
+        "3": { "name": "punctuation.definition.tag.end.html" }
+      },
+      "name": "meta.script-block.js-syntax",
+      "patterns": [
+        {
+          "include": "source.js"
+        }
+      ]
+    },
+    "css-tag": {
+      "begin": "(<)(css)(>)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.html" },
+        "2": { "name": "entity.name.tag.css.html" },
+        "3": { "name": "punctuation.definition.tag.end.html" }
+      },
+      "end": "(<\/)(css)(>)",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.tag.begin.html" },
+        "2": { "name": "entity.name.tag.css.html" },
+        "3": { "name": "punctuation.definition.tag.end.html" }
+      },
+      "name": "meta.css-block.js-syntax",
+      "patterns": [
+        {
+          "include": "source.css"
+        }
+      ]
+    },
+    "template": {
+      "patterns": [
+        {
+          "begin": "\{\{",
+          "end": "\}\}",
+          "name": "support.variable.interpolation.js-syntax",
+          "patterns": [
+            {
+              "include": "source.js#expression"
+            }
+          ]
+        },
+        {
+          "begin": "(data-event-)([a-zA-Z0-9_-]+)(=)",
+          "beginCaptures": {
+            "1": { "name": "entity.other.attribute-name.directive.js-syntax" },
+            "2": { "name": "entity.other.attribute-name.directive.method.js-syntax" },
+            "3": { "name": "punctuation.separator.key-value.html" }
+          },
+          "end": "(?=[ >])",
+          "patterns": [
+                {
+                  "name": "string.unquoted.js-syntax",
+                  "match": "\w+"
+                }
+          ]
+        },
+        {
+          "include": "text.html.basic"
+        }
+      ]
+    }
+  }
+}
